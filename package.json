@@ -2,6 +2,13 @@
   "dependencies": {
     "browser-sync": "^3.0.4",
     "d3": "^7.9.0",
-    "gulp": "^5.0.1"
+    "gulp": "^5.0.1",
+    "gulp-uglify": "^3.0.2"
+  },
+  "devDependencies": {
+    "babelify": "^10.0.0",
+    "browserify": "^17.0.1",
+    "vinyl-buffer": "^1.0.1",
+    "vinyl-source-stream": "^2.0.0"
   }
 }

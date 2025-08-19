@@ -3,6 +3,13 @@ const fs = require('fs');
 const path = require('path');
 const browserSync = require('browser-sync').create();
 
+// 🔹 Browserify deps
+const browserify = require('browserify');
+const source = require('vinyl-source-stream');
+const buffer = require('vinyl-buffer');
+const babelify = require('babelify');
+const uglify = require('gulp-uglify');
+
 // ---------------------------------------------
 // 1. Generate root index.html
 // ---------------------------------------------
@@ -30,7 +37,8 @@ function generateRootIndex(cb) {
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Document</title>
+	<link href="style.css" rel="stylesheet" />
+  <title>Dug's notes - D3</title>
 </head>
 <body>
   <ul>
@@ -46,25 +54,59 @@ function generateRootIndex(cb) {
 }
 
 // ---------------------------------------------
-// 2. Start BrowserSync server
+// 2. Bundle ALL js/app.js files in topic dirs
+// ---------------------------------------------
+function scripts(cb) {
+	const baseDir = './';
+	const items = fs.readdirSync(baseDir);
+
+	items.forEach((item) => {
+		const jsEntry = path.join(baseDir, item, 'src.js');
+
+		if (fs.existsSync(jsEntry)) {
+			// Browserify for each app.js
+			browserify({
+				entries: [jsEntry],
+				debug: true,
+			})
+				.transform(
+					babelify.configure({
+						presets: ['@babel/preset-env'],
+					})
+				)
+				.bundle()
+				.pipe(source('app.js')) // always output app.js
+				.pipe(buffer())
+				.pipe(uglify())
+				.pipe(gulp.dest(path.join(baseDir, item, 'js'))) // save inside same folder
+				.pipe(browserSync.stream());
+			console.log(`✅ Bundled: ${item}/js/app.js`);
+		}
+	});
+
+	cb();
+}
+
+// ---------------------------------------------
+// 3. Start BrowserSync server
 // ---------------------------------------------
 function serve() {
 	browserSync.init({
 		server: {
-			baseDir: './', // root folder
+			baseDir: './',
 		},
-		notify: false, // no popup in browser
-		open: true, // auto-open browser
+		notify: false,
+		open: true,
 	});
 
 	// Watch for changes
 	gulp.watch(['**/*.html'], gulp.series(generateRootIndex, reloadHtml));
-	gulp.watch(['**/*.js']).on('change', browserSync.reload);
+	gulp.watch(['*/src.js'], gulp.series(scripts)); // watch JS inside topic dirs
 	gulp.watch(['**/*.css', '**/*.scss'], injectCss);
 }
 
 // ---------------------------------------------
-// 3. Reload helpers
+// 4. Reload helpers
 // ---------------------------------------------
 function reloadHtml(cb) {
 	browserSync.reload();
@@ -72,11 +114,11 @@ function reloadHtml(cb) {
 }
 
 function injectCss(cb) {
-	browserSync.reload('*.css'); // inject CSS without full reload
+	browserSync.reload('*.css');
 	cb();
 }
 
 // ---------------------------------------------
-// 4. Default task
+// 5. Default task
 // ---------------------------------------------
-exports.default = gulp.series(generateRootIndex, serve);
+exports.default = gulp.series(generateRootIndex, scripts, serve);
