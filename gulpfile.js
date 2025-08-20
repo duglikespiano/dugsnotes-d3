@@ -72,7 +72,10 @@ function scripts(cb) {
 				.transform(
 					babelify.configure({
 						presets: ['@babel/preset-env'],
-					})
+						sourceType: 'module', // ✅ allow ESM parsing
+						ignore: [/\/core-js\//], // optional
+					}),
+					{ global: true } // ✅ apply to node_modules too
 				)
 				.bundle()
 				.pipe(source('app.js')) // always output app.js
@@ -100,7 +103,7 @@ function serve() {
 	});
 
 	// Watch for changes
-	gulp.watch(['**/*.html'], gulp.series(generateRootIndex, reloadHtml));
+	gulp.watch(['*/index.html'], gulp.series(generateRootIndex, reloadHtml));
 	gulp.watch(['*/src.js'], gulp.series(scripts)); // watch JS inside topic dirs
 	gulp.watch(['**/*.css', '**/*.scss'], injectCss);
 }
