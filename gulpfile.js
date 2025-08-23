@@ -104,7 +104,7 @@ function serve() {
 
 	// Watch for changes
 	gulp.watch(['*/index.html'], gulp.series(generateRootIndex, reloadHtml));
-	gulp.watch(['*/src.js'], gulp.series(scripts)); // watch JS inside topic dirs
+	gulp.watch(['*/app.js'], gulp.series(reloadHtml)); // watch JS inside topic dirs
 	gulp.watch(['**/*.css', '**/*.scss'], injectCss);
 }
 
@@ -124,4 +124,4 @@ function injectCss(cb) {
 // ---------------------------------------------
 // 5. Default task
 // ---------------------------------------------
-exports.default = gulp.series(generateRootIndex, scripts, serve);
+exports.default = gulp.series(generateRootIndex, reloadHtml, serve);
