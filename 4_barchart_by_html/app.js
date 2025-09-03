@@ -1,4 +1,5 @@
-// https://youtu.be/g5bp02-CRAc?si=dmIyAfmNRBedvw_q
+// https://www.youtube.com/watch?v=TOJ9yjvlapY
+
 import * as d3 from 'https://cdn.jsdelivr.net/npm/d3@7/+esm';
 const DUMMY_DATA = [
 	{ id: 1, value: 10, region: 'America' },
