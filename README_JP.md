@@ -28,3 +28,10 @@
 ### 2. Project 目標
 
 - Javascript データ視覚化ライブラリ d3 の基本文法に慣れること
+
+### 3. メモ
+
+- d3 の流れ
+  <img src="flow_of_d3.png">
+  <em>参照: [Create Custom D3 Charts in Minutes with GitHub Engineer, Amelia Wattenberger
+  ](https://youtu.be/S3LNbBg_B2A?si=3yfVMRKi4E77Jd8s)</em>

@@ -28,3 +28,10 @@
 ### 2. 프로젝트목표
 
 - Javascript 데이터 시각화 라이브러리 d3의 기본 문법을 익힐 것
+
+### 3. 메모
+
+- d3의 흐름
+  <img src="flow_of_d3.png">
+  <em>출처: [Create Custom D3 Charts in Minutes with GitHub Engineer, Amelia Wattenberger
+  ](https://youtu.be/S3LNbBg_B2A?si=3yfVMRKi4E77Jd8s)</em>

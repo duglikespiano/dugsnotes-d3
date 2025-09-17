@@ -28,3 +28,12 @@
 ### 2. Project goal
 
 - Getting used to Javascript data visualization library d3
+  </br>
+  </br>
+
+### 3. Memo
+
+- flow of d3
+  <img src="flow_of_d3.png">
+  <em>source: [Create Custom D3 Charts in Minutes with GitHub Engineer, Amelia Wattenberger
+  ](https://youtu.be/S3LNbBg_B2A?si=3yfVMRKi4E77Jd8s)</em>
